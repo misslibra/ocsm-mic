@@ -6,15 +6,17 @@
 # ---------------------------------------------------------------
 
 #!/bin/bash
-
+# CUDA_VISIBLE_DEVICES=6  bash test.sh /home/yguo/Documents/other/MIC/seg/work_dirs/local-basic/230822_2202_gtaHR2csHR_mic_hrda_s2_3e3b3 iter_40000
 TEST_ROOT=$1
+ITERATION=$2
+
 CONFIG_FILE="${TEST_ROOT}/*${TEST_ROOT: -1}.py"  # or .json for old configs
-CHECKPOINT_FILE="${TEST_ROOT}/latest.pth"
+CHECKPOINT_FILE="${TEST_ROOT}/${ITERATION}.pth"
 SHOW_DIR="${TEST_ROOT}/preds"
 echo 'Config File:' $CONFIG_FILE
 echo 'Checkpoint File:' $CHECKPOINT_FILE
 echo 'Predictions Output Directory:' $SHOW_DIR
-python -m tools.test ${CONFIG_FILE} ${CHECKPOINT_FILE} --eval mIoU --show-dir ${SHOW_DIR} --opacity 1
+python -m tools.test --config ${CONFIG_FILE} --checkpoint ${CHECKPOINT_FILE} --eval mIoU --show-dir ${SHOW_DIR} --opacity 1
 
 # Uncomment the following lines to visualize the LR predictions,
 # HR predictions, or scale attentions of HRDA:

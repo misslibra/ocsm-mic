@@ -11,100 +11,53 @@ import os.path as osp
 import mmcv
 import numpy as np
 from PIL import Image
-import cv2
 
-FULL_CLASS=False
 
 def convert_to_train_id(file):
     # re-assign labels to match the format of Cityscapes
     pil_label = Image.open(file)
     label = np.asarray(pil_label)
-    if FULL_CLASS:
-        id_to_trainid = {
-            0: 0,
-            1: 1,
-            2: 2,
-            3: 3,
-            4: 4,
-            5: 5,
-            6: 6,
-            7: 7,
-            8: 8,
-            9: 9,
-            10: 10,
-            11: 11,
-            12: 12,
-            13: 13,
-            14: 14,
-            15: 15,
-            16: 16,
-            17: 17,
-            18: 18,
-            19: 255
-        }
-        label_copy = 255 * np.ones(label.shape, dtype=np.uint8)
-        sample_class_stats = {}
-        for k, v in id_to_trainid.items():
-            k_mask = label == k
-            label_copy[k_mask] = v
-            n = int(np.sum(k_mask))
-            if n > 0:
-                sample_class_stats[v] = n
-        # new_file = file.replace('.png', '_labelTrainIds.png')
-        new_file = file.replace('/labels/', '/labels_19to255/')
-
-        assert file != new_file
-        sample_class_stats['file'] = new_file
-        cv2.imwrite(new_file, label_copy)
-        # Image.fromarray(label_copy, mode='L').save(new_file)
-    else:
-        id_to_trainid = {
-            0: 0,
-            1: 1,
-            2: 2,
-            3: 3,
-            4: 4,
-            5: 5,
-            6: 6,
-            7: 7,
-            8: 8,
-            9: 9,
-            10: 10,
-            11: 11,
-            12: 12,
-            13: 13,
-            14: 14,
-            15: 15,
-            16: 16,
-            17: 17,
-            18: 18,
-            19: 19
-        }
-        label_copy = 255 * np.ones(label.shape, dtype=np.uint8)
-        sample_class_stats = {}
-        for k, v in id_to_trainid.items():
-            k_mask = label == k
-            label_copy[k_mask] = v
-            n = int(np.sum(k_mask))
-            if n > 0:
-                sample_class_stats[v] = n
-        # new_file = file.replace('.png', '_labelTrainIds.png')
-        # new_file = file.replace('/labels_clean_cindy/', '/labels_clean_base_255/')
-
-        # assert file != new_file
-        sample_class_stats['file'] = file
-        # print(sample_class_stats)
-        # Image.fromarray(label_copy[:,:,0], mode='L').save(new_file)
-        # cv2.imwrite(new_file, label_copy)
-
+    id_to_trainid = {
+        0: 0,
+        1: 1,
+        2: 2,
+        3: 3,
+        4: 4,
+        5: 5,
+        6: 6,
+        7: 7,
+        8: 8,
+        9: 9,
+        10: 10,
+        11: 11,
+        12: 12,
+        13: 13,
+        14: 14,
+        15: 15,
+        16: 16,
+        17: 17,
+        18: 18
+    }
+    label_copy = 255 * np.ones(label.shape, dtype=np.uint8)
+    sample_class_stats = {}
+    for k, v in id_to_trainid.items():
+        k_mask = label == k
+        label_copy[k_mask] = v
+        n = int(np.sum(k_mask))
+        if n > 0:
+            sample_class_stats[v] = n
+    # new_file = file.replace('.png', '_labelTrainIds.png')
+    # assert file != new_file
+    sample_class_stats['file'] = file
+    # Image.fromarray(label_copy, mode='L').save(new_file)
     return sample_class_stats
 
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Convert GTA annotations to TrainIds')
-    parser.add_argument('--synscape_path', default='/home/yguo/Documents/other/MIC/seg/data/gta/labels_multiple_classes/human_cycle_classes', help='gta data path')
-    parser.add_argument('--gt-dir', default='labels_clean_cindy', type=str)
+        description='Convert SYNSCAPES annotations to TrainIds')
+    parser.add_argument('--synscape_path', default='/home/yguo/Documents/other/MIC/seg/data/synscapes/labels_multiple_classes/human_cycle_classes', help='synscapes data path')
+    parser.add_argument('--gt-dir', default='labels', type=str)
     parser.add_argument('-o', '--out-dir', help='output path')
     parser.add_argument(
         '--nproc', default=4, type=int, help='number of process')

@@ -52,6 +52,7 @@ def intersect_and_union(pred_label,
          torch.Tensor: The prediction histogram on all classes.
          torch.Tensor: The ground truth histogram on all classes.
     """
+    label=label[:,:,0] # cindy add , for label jose make it 3 channels
 
     if isinstance(pred_label, str):
         pred_label = torch.from_numpy(np.load(pred_label))
@@ -288,7 +289,7 @@ def eval_metrics(results,
     allowed_metrics = ['mIoU', 'mDice', 'mFscore']
     if not set(metrics).issubset(set(allowed_metrics)):
         raise KeyError('metrics {} is not supported'.format(metrics))
-
+    
     total_area_intersect, total_area_union, total_area_pred_label, \
         total_area_label = total_intersect_and_union(
             results, gt_seg_maps, num_classes, ignore_index, label_map,

@@ -19,6 +19,7 @@ import math
 import os
 import random
 from copy import deepcopy
+import cv2
 
 import mmcv
 import numpy as np
@@ -338,6 +339,14 @@ class DACS(UDADecorator):
             'std': stds[0].unsqueeze(0)
         }
 
+        #### cindy add
+        # a = gt_semantic_seg[0,0,:].cpu().numpy()
+        # print('a.shape', a.shape, img_metas[0]['filename'])
+        # a[a==11]=150
+        # a[a==12]=50
+        # cv2.imwrite('forward_gt_semantic_seg.png', a)
+        ###
+
         # Train on source images
         clean_losses = self.get_model().forward_train(
             img, img_metas, gt_semantic_seg, return_feat=True)
@@ -407,7 +416,29 @@ class DACS(UDADecorator):
                 _, mixed_seg_weight[i] = strong_transform(
                     strong_parameters,
                     target=torch.stack((gt_pixel_weight[i], pseudo_weight[i])))
+                ########## cindy add debug
+                # mixed_lbl_np = (mixed_lbl[i][0,0,:,:]).cpu().numpy() * 10
+                # cv2.imwrite('labelmix.png', mixed_lbl_np)
+                # # mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375]
+                # mean=[123.675, 116.28, 103.53]
+                # std=[58.395, 57.12, 57.375]
+                # to_rgb=False
+                # mean = np.array(mean, dtype=np.float32)
+                # std = np.array(std, dtype=np.float32)
+                # to_rgb = to_rgb
+                # mixed_img_np = mixed_img[i].view(1024,1024,3).cpu().numpy()
+                # mixed_img_save = mmcv.imdenormalize(mixed_img_np, mean, std, to_rgb)
+                # cv2.imwrite('imgmix.png', mixed_img_save)
+                # img_save = img[i].view(1024,1024,3).cpu().numpy()
+                # target_save = target_img[i].view(1024,1024,3).cpu().numpy()
+                # img_save = mmcv.imdenormalize(img_save, mean, std, to_rgb)
+                # target_save = mmcv.imdenormalize(target_save, mean, std, to_rgb)
+                # cv2.imwrite('img_save.png', img_save)
+                # cv2.imwrite('target_save.png', target_save)
+                ########## cindy add debug
+
             del gt_pixel_weight
+
             mixed_img = torch.cat(mixed_img)
             mixed_lbl = torch.cat(mixed_lbl)
 

@@ -122,9 +122,17 @@ class UDADataset(object):
 
     def get_rare_class_sample(self):
         c = np.random.choice(self.rcs_classes, p=self.rcs_classprob)
+        # c = np.random.choice(self.rcs_classes, p=[0.25,0.25,0.25,0.25]) # cindy
+
+        # print('cindy : sample prob: ', self.rcs_classprob, c)
+
         f1 = np.random.choice(self.samples_with_class[c])
         i1 = self.file_to_idx[f1]
         s1 = self.source[i1]
+
+        # cindy
+        # a = s1['gt_semantic_seg'].data.cpu().numpy()
+        # print('---1---',np.unique(a), a.shape)
         if self.rcs_min_crop_ratio > 0:
             for j in range(10):
                 n_class = torch.sum(s1['gt_semantic_seg'].data == c)
@@ -136,6 +144,11 @@ class UDADataset(object):
                 # preprocessing pipeline to the loaded image, which includes
                 # RandomCrop, and results in a new crop of the image.
                 s1 = self.source[i1]
+        # a = s1['gt_semantic_seg'].data.cpu().numpy()
+        # print('---2---',np.unique(a), a.shape)
+        # cindy
+
+
         i2 = np.random.choice(range(len(self.target)))
         s2 = self.target[i2]
 

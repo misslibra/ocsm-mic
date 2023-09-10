@@ -91,10 +91,27 @@ def get_class_masks(labels):
     class_masks = []
     for label in labels:
         classes = torch.unique(labels)
+
+        ##  cindy add , to debug  why human_cycle predict bad in person/rider
+        classes_list = classes.cpu().tolist()
+        if 255 in classes_list:
+            classes_list.remove(255)
+        # if 11 in classes_list:
+        #     classes_list.remove(11)
+        # if 12 in classes_list:
+        #     classes_list.remove(12)
+        # if 17 in classes_list:
+        #     classes_list.remove(17)
+        # if 18 in classes_list:
+        #     classes_list.remove(18)
+        classes = torch.Tensor(classes_list).cuda()
+        ##  cindy add , to debug  why human_cycle predict bad in person/rider
+
         nclasses = classes.shape[0]
         class_choice = np.random.choice(
             nclasses, int((nclasses + nclasses % 2) / 2), replace=False)
         classes = classes[torch.Tensor(class_choice).long()]
+        # print('sample class : ', classes)
         class_masks.append(generate_class_mask(label, classes).unsqueeze(0))
     return class_masks
 
@@ -103,6 +120,10 @@ def generate_class_mask(label, classes):
     label, classes = torch.broadcast_tensors(label,
                                              classes.unsqueeze(1).unsqueeze(2))
     class_mask = label.eq(classes).sum(0, keepdims=True)
+
+    # import cv2
+
+    # cv2.imwrite("mask.png", (class_mask.cpu().numpy()*100)[0,:])
     return class_mask
 
 

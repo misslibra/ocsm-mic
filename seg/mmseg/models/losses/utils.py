@@ -41,6 +41,7 @@ def reduce_loss(loss, reduction):
         return loss
     elif reduction_enum == 1:
         return loss.mean()
+
     elif reduction_enum == 2:
         return loss.sum()
 

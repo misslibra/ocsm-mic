@@ -11,6 +11,10 @@ from mmcv.engine import collect_results_cpu, collect_results_gpu
 from mmcv.image import tensor2imgs
 from mmcv.runner import get_dist_info
 
+import sys
+_repository = '/home/yguo/Documents/other/deeplabv3'
+sys.path.append(_repository)
+from utils_jury_learning import *
 
 def np2tmp(array, temp_file_name=None, tmpdir=None):
     """Save ndarray to local numpy file.
@@ -60,6 +64,9 @@ def single_gpu_test(model,
     results = []
     dataset = data_loader.dataset
     prog_bar = mmcv.ProgressBar(len(dataset))
+    if out_dir:
+        id_out_dir = out_dir.replace('preds', 'id_results')
+        creat_empty_folder(id_out_dir)
     if efficient_test:
         mmcv.mkdir_or_exist('.efficient_test')
     for i, data in enumerate(data_loader):
@@ -90,6 +97,11 @@ def single_gpu_test(model,
                     # Attention debug output
                     mmcv.imwrite(result[0] * 255, out_file)
                 else:
+                    if out_dir:
+                        id_img = decode_to_id_img(result[0])
+                        id_img_name = img_meta['ori_filename'].split('/')[-1]
+                        cv2.imwrite(id_out_dir + os.sep + id_img_name, id_img)
+
                     model.module.show_result(
                         img_show,
                         result,
