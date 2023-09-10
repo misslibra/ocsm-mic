@@ -8,9 +8,9 @@ _base_ = [
     # DAFormer Network Architecture
     '../_base_/models/daformer_sepaspp_mitb5.py',
     # GTA->Cityscapes High-Resolution Data Loading
-    '../_base_/datasets/uda_gtaHR_to_cityscapesHR_1024x1024.py',
+    '../_base_/datasets/uda_traffic_gtavHR_to_cityscapesHR_1024x1024.py',
     # DAFormer Self-Training
-    '../_base_/uda/dacs_a999_fdthings.py',
+    '../_base_/uda/dacs_a999_fd_traffic.py',
     # AdamW Optimizer
     '../_base_/schedules/adamw.py',
     # Linear Learning Rate Warmup with Subsequent Linear Decay
@@ -23,6 +23,7 @@ model = dict(
     type='HRDAEncoderDecoder',
     decode_head=dict(
         type='HRDAHead',
+        num_classes=20, # cindy add for category model
         # Use the DAFormer decoder for each scale.
         single_scale_head='DAFormerHead',
         # Learn a scale attention for each class channel of the prediction.
@@ -96,12 +97,12 @@ n_gpus = 1
 gpu_model = 'NVIDIATITANRTX'
 runner = dict(type='IterBasedRunner', max_iters=40000)
 # Logging Configuration
-checkpoint_config = dict(by_epoch=False, interval=40000, max_keep_ckpts=1)
-evaluation = dict(interval=4000, metric='mIoU')
+checkpoint_config = dict(by_epoch=False, interval=4000, max_keep_ckpts=10)
+evaluation = dict(interval=4000, metric='mIoU') # 4000
 # Meta Information for Result Analysis
-name = 'fd_thing_gtaHR2csHR_mic_hrda_s2'
+name = 'traffic_gtavHR2csHR_mic_hrda_s2'
 exp = 'basic'
-name_dataset = 'gtaHR2cityscapesHR_1024x1024'
+name_dataset = 'traffic_gtavHR2cityscapesHR_1024x1024'
 name_architecture = 'hrda1-512-0.1_daformer_sepaspp_sl_mitb5'
 name_encoder = 'mitb5'
 name_decoder = 'hrda1-512-0.1_daformer_sepaspp_sl'

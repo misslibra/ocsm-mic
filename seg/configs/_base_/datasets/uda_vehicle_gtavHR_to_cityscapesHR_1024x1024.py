@@ -5,7 +5,7 @@
 # ---------------------------------------------------------------
 
 # dataset settings
-dataset_type = 'CityscapesDataset'
+dataset_type = 'CategoryCityscapesDataset'
 data_root = 'data/cityscapes/'
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
@@ -13,7 +13,7 @@ crop_size = (1024, 1024)
 gta_train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations'),
-    dict(type='Resize', img_scale=(2560, 1440)),
+    dict(type='Resize', img_scale=(2560, 1440)),# (2560, 1440) for GTA (1914, 1046-1052), (2880, 1440) for synscapes(1440,720)
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', prob=0.5),
     # dict(type='PhotoMetricDistortion'),  # is applied later in dacs.py
@@ -52,30 +52,30 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=2,
+    samples_per_gpu=1,
     workers_per_gpu=4,
     train=dict(
         type='UDADataset',
         source=dict(
-            type='GTADataset',
-            data_root='data/gta/labels_full_class/',
+            type='CategoryGTADataset',
+            data_root='data/gta/labels_multiple_classes/vehicle_classes/',
             img_dir='LAB_translated/Cityscapes',
-            ann_dir='labels_19to255',
+            ann_dir='labels',
             pipeline=gta_train_pipeline),
         target=dict(
-            type='CityscapesDataset',
+            type='CategoryCityscapesDataset',
             data_root='data/cityscapes/',
             img_dir='leftImg8bit/train',
             ann_dir='gtFine/train',
             pipeline=cityscapes_train_pipeline)),
     val=dict(
-        type='CityscapesDataset',
+        type='CategoryCityscapesDataset',
         data_root='data/cityscapes/',
         img_dir='leftImg8bit/val',
         ann_dir='gtFine/val',
         pipeline=test_pipeline),
     test=dict(
-        type='CityscapesDataset',
+        type='CategoryCityscapesDataset',
         data_root='data/cityscapes/',
         img_dir='leftImg8bit/val',
         ann_dir='gtFine/val',
