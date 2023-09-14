@@ -100,7 +100,7 @@ runner = dict(type='IterBasedRunner', max_iters=40000)
 checkpoint_config = dict(by_epoch=False, interval=4000, max_keep_ckpts=10)
 evaluation = dict(interval=4000, metric='mIoU') # 4000
 # Meta Information for Result Analysis
-name = 'background_gtavHR2csHR_mic_hrda_s2'
+name = 'not_sample_19_background_gtavHR2csHR_mic_hrda_s2'
 exp = 'basic'
 name_dataset = 'background_gtavHR2cityscapesHR_1024x1024'
 name_architecture = 'hrda1-512-0.1_daformer_sepaspp_sl_mitb5'

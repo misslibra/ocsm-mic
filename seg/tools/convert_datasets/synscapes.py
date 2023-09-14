@@ -36,7 +36,8 @@ def convert_to_train_id(file):
         15: 15,
         16: 16,
         17: 17,
-        18: 18
+        18: 18,
+        19: 19
     }
     label_copy = 255 * np.ones(label.shape, dtype=np.uint8)
     sample_class_stats = {}
@@ -56,7 +57,7 @@ def convert_to_train_id(file):
 def parse_args():
     parser = argparse.ArgumentParser(
         description='Convert SYNSCAPES annotations to TrainIds')
-    parser.add_argument('--synscape_path', default='/home/yguo/Documents/other/MIC/seg/data/synscapes/labels_multiple_classes/human_cycle_classes', help='synscapes data path')
+    parser.add_argument('--synscape_path', default='/home/yguo/Documents/other/ocsm-mic/seg/data/synscapes/labels_multiple_classes/traffic_classes', help='synscapes data path')
     parser.add_argument('--gt-dir', default='labels', type=str)
     parser.add_argument('-o', '--out-dir', help='output path')
     parser.add_argument(

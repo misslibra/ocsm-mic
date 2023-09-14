@@ -100,7 +100,7 @@ runner = dict(type='IterBasedRunner', max_iters=40000)
 checkpoint_config = dict(by_epoch=False, interval=4000, max_keep_ckpts=10)
 evaluation = dict(interval=4000, metric='mIoU') # 4000
 # Meta Information for Result Analysis
-name = 'traffic_synscapesHR2csHR_mic_hrda_s2'
+name = 'not_sample_19_traffic_synscapesHR2csHR_mic_hrda_s2'
 exp = 'basic'
 name_dataset = 'traffic_synscapesHR2cityscapesHR_1024x1024'
 name_architecture = 'hrda1-512-0.1_daformer_sepaspp_sl_mitb5'

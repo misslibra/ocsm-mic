@@ -13,7 +13,7 @@ crop_size = (1024, 1024)
 gta_train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations'),
-    dict(type='Resize', img_scale=(2560, 1440)),# (2560, 1440) for GTA (1914, 1046-1052), (2880, 1440) for synscapes(1440,720)
+    dict(type='Resize', img_scale=(2560, 1440)),# (2560, 1440) for GTA (1914, 1052), (2880, 1440) for synscapes(1440,720)
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', prob=0.5),
     # dict(type='PhotoMetricDistortion'),  # is applied later in dacs.py
@@ -60,7 +60,7 @@ data = dict(
             type='CategoryGTADataset',
             data_root='data/gta/labels_multiple_classes/human_cycle_classes/',
             img_dir='LAB_translated/Cityscapes',
-            ann_dir='labels_clean_base_255',
+            ann_dir='labels_clean_cindy',
             pipeline=gta_train_pipeline),
         target=dict(
             type='CategoryCityscapesDataset',

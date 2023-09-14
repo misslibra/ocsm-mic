@@ -97,10 +97,10 @@ n_gpus = 1
 gpu_model = 'NVIDIATITANRTX'
 runner = dict(type='IterBasedRunner', max_iters=40000)
 # Logging Configuration
-checkpoint_config = dict(by_epoch=False, interval=4000, max_keep_ckpts=10)
-evaluation = dict(interval=1000, metric='mIoU') # 4000
+checkpoint_config = dict(by_epoch=False, interval=20000, max_keep_ckpts=10)
+evaluation = dict(interval=20000, metric='mIoU') # 4000
 # Meta Information for Result Analysis
-name = 'even_sample_clean_human_cycle_20_class_gtavHR2csHR_mic_hrda_s2'
+name = 'sample_all_human_cycle_20_class_gtavHR2csHR_mic_hrda_s2'
 exp = 'basic'
 name_dataset = 'clean_human_cycle_gtavHR2cityscapesHR_1024x1024'
 name_architecture = 'hrda1-512-0.1_daformer_sepaspp_sl_mitb5'

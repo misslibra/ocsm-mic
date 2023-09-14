@@ -6,7 +6,7 @@
 # ---------------------------------------------------------------
 
 #!/bin/bash
-# CUDA_VISIBLE_DEVICES=6  bash test.sh /home/yguo/Documents/other/MIC/seg/work_dirs/local-basic/230822_2202_gtaHR2csHR_mic_hrda_s2_3e3b3 iter_40000
+# CUDA_VISIBLE_DEVICES=7  bash test.sh /home/yguo/Documents/other/ocsm-mic/seg/work_dirs/local-basic/230910_2045_sample_all_human_cycle_20_class_gtavHR2csHR_mic_hrda_s2_fd3a0 iter_16000
 TEST_ROOT=$1
 ITERATION=$2
 
